@@ -1,0 +1,19 @@
+button {
+    color: rgb(204, 158, 115);
+    background-color: #4a2503;
+    border: none !important;
+    width: 95px;
+    height: 70px;
+    border-radius: 5px;
+    box-shadow: 1px 3px rgb(0,0,0);
+}
+button:hover {
+    cursor: pointer;
+}
+button:focus {
+    outline: none;
+}
+button:active, button:focus:active {
+    background-color: #513316;
+    box-shadow: none;
+}

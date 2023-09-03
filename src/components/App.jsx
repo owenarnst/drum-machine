@@ -18,6 +18,22 @@ const padInfo = [
 function Machine() {
 
   const [desc, updateDesc] = useState("");
+  const [power, setPower] = useState(true);
+  const [rangeVal, setRangeVal] = useState(50);
+  const [volChange, isVolChange] = useState(false);
+
+
+  const handleChange = (event) => {
+      updateDesc("");
+      setRangeVal(event.target.value);
+      isVolChange(true);
+      setTimeout(() => isVolChange(false), 2000);
+  }
+
+  const toggle = () => {
+    updateDesc("");
+    setPower(!power);
+  }
 
   const getIndex = (symbol) => {
     for(let i = 0; i < padInfo.length; i++) {
@@ -29,34 +45,30 @@ function Machine() {
 
   const handleKeyDown = (event) => {
     if ("qweasdzxc".indexOf(event.key.toLowerCase()) > -1) {
-        const symbol = event.key.toUpperCase();
-        padInfo[getIndex(symbol)].active = true;
         const button = document.getElementById(event.key.toLowerCase());
         button.click();
       }
   }
   window.addEventListener('keydown', handleKeyDown);
 
-  const handleKeyUp = (event) => {
-    const symbol = event.key.toUpperCase();
-    padInfo[getIndex(symbol)].active = false;
-  }
-
   const handleClick = (event) => {
-    const symbol = event.target.textContent.toUpperCase();
-    updateDesc(padInfo[getIndex(symbol)].description);
-    const audioElement = document.getElementById(symbol);
-    audioElement.currentTime = 0; // Reset playback position to the beginning
-    audioElement.play();
-    window.addEventListener('keyup', handleKeyUp);
+    if(power) {
+      const symbol = event.target.textContent.toUpperCase();
+      updateDesc(padInfo[getIndex(symbol)].description);
+      const audioElement = document.getElementById(symbol);
+      audioElement.volume = rangeVal/100;
+      audioElement.currentTime = 0; // Reset playback position to the beginning
+      audioElement.play();
+    }
   }
 
   return (
     <>
-        <div className="container">
-          <Pads arr={padInfo} handleClick={handleClick}/>
+        <div id="drum-set" className="container align-items-center">
+          <Pads arr={padInfo} handleClick={handleClick} power={power} />
         </div>
-        <Controls name={desc} />
+        <Controls name={desc} switchPower={toggle} power={power} onRangeChange={handleChange} 
+                  rangeValue={rangeVal} volumeChange={volChange} />
     </>
   );
 }

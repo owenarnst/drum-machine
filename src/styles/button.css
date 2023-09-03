@@ -1,5 +1,5 @@
 button {
-  color: rgb(204, 158, 115);
+  color: #f46a40;
   background-color: #4a2503;
   border: none !important;
   width: 95px;
@@ -16,7 +16,15 @@ button:focus {
   outline: none;
 }
 
-button:active, button:focus:active {
-  background-color: #513316;
-  box-shadow: none;
+@media only screen and (max-width: 1000px) and (min-width: 425px) {
+  button {
+    width: 125px;
+    height: 88px;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  button {
+    width: 150px !important;
+    height: 115px;
+  }
 }/*# sourceMappingURL=button.css.map */

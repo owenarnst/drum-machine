@@ -4,3 +4,25 @@
     background-color: #f46a40;
     border: solid 2px #4a2503;
 }
+
+@media only screen and (max-width: 1000px) and (min-width: 425px) {
+    #drum-machine {
+        width: 410px;
+        height: 490px;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    #drum-machine {
+        display: flex;
+        width: 900px;
+        height: 400px;
+    }
+    #drum-set {
+        width: 120%;
+        display: grid;
+    }
+    #controls {
+        border: solid black;
+    }
+}

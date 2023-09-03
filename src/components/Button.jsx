@@ -1,30 +1,44 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/button.css'
 
 export function Pad(props) {
 
     const style = {
-        backgroundColor: "#513316",
+        backgroundColor: props.power ? "rgb(204, 158, 115)" : "",
         boxShadow: "none",
     };
 
-    const [isActive, setIsActive] = useState(props.sound.active);
+    const [isActive, setIsActive] = useState(false);
 
-    const handleKeyUp = () => {
-        setIsActive(false);
+    const animate = () => {
+        setIsActive(true);
+        setTimeout(() => setIsActive(false), 200);
     }
-    const handleKeyDown = (event) => {
-        if ("qweasdzxc".indexOf(event.key.toLowerCase()) > -1) {
-            setIsActive(props.sound.active);
-            window.addEventListener('keyup', handleKeyUp);
-          }
-      }
-    window.addEventListener('keydown', handleKeyDown);
     
+    const handleKeyPress = (event) => {
+        if(event.key === props.sound.symbol.toLowerCase()) {
+            animate();
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keypress', handleKeyPress);
+        // Cleanup function to remove the event listener when the component unmounts
+        return () => {
+          window.removeEventListener('keydown', handleKeyPress);
+        };
+      }, []);
+
     return (
-            <div className="drum-pad d-flex justify-content-center px-0 col-4">
-                <audio id={props.sound.symbol} className="clip" src={props.sound.audio} ></audio>
-                <button id={props.sound.symbol.toLowerCase()} onClick={props.buttonClick} style={isActive ? style : {}}>
+            <div className="d-flex justify-content-center px-0 col-4">
+                <button 
+                    id={props.sound.symbol.toLowerCase()} 
+                    className='drum-pad'
+                    onClick={props.buttonClick} 
+                    onMouseUp={animate}
+                    style={isActive ? style : {}}
+                >
+                    <audio id={props.sound.symbol} className="clip" src={props.sound.audio} ></audio>
                     {props.sound.symbol}
                 </button>
             </div>
